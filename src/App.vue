@@ -1,22 +1,97 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+        <div class="container_input">
+            <div class="box_input">
+                <h3>Latitude</h3>
+               <input type="text" placeholder="Latitude" contenteditable="true" v-model="la">
+            </div>
+            <div class="box_input">
+              <h3>Longitude</h3>
+               <input type="text" placeholder="Longitude" contenteditable="true" v-model="lo">
+            </div>
+            <button @click="fetchapi">
+                Show
+            </button>
+        </div>
+
+        <div class="detaiales"  v-if="istrue">
+              <div class="title">
+                  <h1>{{weather.name}} - {{country}}</h1> 
+                  <h3>2022 May 12</h3>
+              </div>
+              <div class="data_weather">
+                  <h3> {{temp}} K</h3>
+                  <p>{{status}}</p>
+              </div>
+        </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  
+  
+
+  data() {
+    return {
+      api_key: '7768fe50be029fafd5f68d0fac6cabf5',
+      api_main : 'https://api.openweathermap.org/data/2.5/weather?lat=',
+
+      la:'36.28210583357307',
+      lo:'59.581527560949326',
+
+      weather : '',
+      temp:'',
+      country:'',
+      status:'',
+      istrue:false,
+    }
+  },
+  methods: {
+    fetchapi(){
+      let api = `${this.api_main}${this.la}&lon=${this.lo}&appid=${this.api_key}`;
+
+     
+      
+
+  
+           fetch(api).then(res =>{
+             return res.json()
+           }).then(response =>{
+             console.log(response);
+             this.weather = response;
+             console.log(this.weather);
+             this.temp = this.weather.main.temp;
+             this.country = this.weather.sys.country;
+             this.status = this.weather.weather[0].main;
+             this.istrue=true;
+           });
+        }
+
+    },
+
+    
+
+
 }
 </script>
 
 <style>
+html{
+  margin: 0; padding: 0;
+  height: 100vh;
+  background-image: url("./assets/img1.jpg");
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.bg{
+  background-image: url("./assets/img2.jpg");
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,5 +99,49 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.container_input{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+button{
+  border: none; outline: none;
+  padding: 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.box_input{
+  width: 30rem;
+  background-color: rgba(116, 116, 116, 0.4);
+  display: flex;
+  justify-content: space-around;
+  transition: all .6s;
+}
+.box_input:hover{
+  background-color: rgba(247, 247, 247,.7);
+  
+}
+.box_input h3{
+  font-weight: bold;
+}
+.box_input input{
+  width: 60%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-weight: noram;
+  font-size: .9rem;
+}
+.detaiales{
+  width: 99%; height: 40%;
+  margin: 0;
+  background:rgba(230, 230, 230,.4);
+  position: absolute;
+  top: 50%;
+  margin: 0 auto;
+  display: flex; justify-content: space-around;
+  flex-direction: column;
 }
 </style>
