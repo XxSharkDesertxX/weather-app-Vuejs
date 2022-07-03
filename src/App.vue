@@ -24,6 +24,11 @@
                   <p>{{status}}</p>
               </div>
         </div>
+
+        <div class="internet" v-if="!checkInternet">
+          <h2>Internt is no avilable ......</h2>
+        </div>
+
   </div>
 </template>
 
@@ -47,7 +52,8 @@ export default {
       city : '',
       status:'',
       istrue:false,
-    
+
+      checkInternet :true,
     }
   },
   methods: {
@@ -77,6 +83,15 @@ export default {
         this.istrue=true;
       })  
 
+      // check internet
+      if(navigator.onLine) {
+          this.checkInternet = true;
+          console.log(this.checkInternet);
+      } else {
+          this.checkInternet = false;
+          console.log(this.checkInternet);
+      }
+
         },
 
         dateBulider(){
@@ -92,6 +107,10 @@ export default {
               ${day} - ${month}  - ${year}
             `
         }
+    },
+
+    created() {
+      
     },
 
 }
@@ -161,5 +180,12 @@ button{
   margin: 0 auto;
   display: flex; justify-content: space-around;
   flex-direction: column;
+}
+.internet{
+  position: absolute;
+  top:.2rem;
+  left:.2rem;
+  color: rgb(133, 14, 14);
+
 }
 </style>
