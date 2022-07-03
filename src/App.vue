@@ -7,9 +7,9 @@
             </div>
             <div class="box_input">
               <h3>Longitude</h3>
-               <input type="text" placeholder="Longitude" contenteditable="true" v-model="lo">
+               <input type="text" placeholder="Longitude" contenteditable="true" v-model="lo" @keydown.enter="fetchapi">
             </div>
-            <button @click="fetchapi">
+            <button @click="fetchapi" @dblclick="istrue = false">
                 Show
             </button>
         </div>
@@ -32,8 +32,6 @@
 
 export default {
   name: 'App',
-  
-  
 
   data() {
     return {
@@ -54,16 +52,11 @@ export default {
     fetchapi(){
       let api = `${this.api_main}${this.la}&lon=${this.lo}&appid=${this.api_key}`;
 
-     
-      
-
-  
            fetch(api).then(res =>{
              return res.json()
            }).then(response =>{
              console.log(response);
              this.weather = response;
-             console.log(this.weather);
              this.temp = this.weather.main.temp;
              this.country = this.weather.sys.country;
              this.status = this.weather.weather[0].main;
