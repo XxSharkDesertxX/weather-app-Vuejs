@@ -17,7 +17,7 @@
         <div class="detaiales"  v-if="istrue">
               <div class="title">
                   <h1>{{weather.name}} - {{country}}</h1> 
-                  <h3>2022 May 12</h3>
+                  <h3>{{dateBulider()}}</h3>
               </div>
               <div class="data_weather">
                   <h3> {{temp}} K</h3>
@@ -46,12 +46,12 @@ export default {
       country:'',
       status:'',
       istrue:false,
+    
     }
   },
   methods: {
     fetchapi(){
       let api = `${this.api_main}${this.la}&lon=${this.lo}&appid=${this.api_key}`;
-
            fetch(api).then(res =>{
              return res.json()
            }).then(response =>{
@@ -62,12 +62,22 @@ export default {
              this.status = this.weather.weather[0].main;
              this.istrue=true;
            });
+        },
+
+        dateBulider(){
+            let date = new Date();
+            let days = ["Sunday", "Monday", "TuseDay","Wednesday", "Friday","Saturday"];
+            let months = ["January ","February", "March ", "April", "May", "June", "July","August", "September" , "October", "November", "December"];
+
+            let day = days[date.getDay()];
+            let month = months[date.getMonth()];
+            let year = date.getFullYear();
+
+            return`
+              ${day} - ${month}  - ${year}
+            `
         }
-
     },
-
-    
-
 
 }
 </script>
